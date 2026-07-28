@@ -1,151 +1,148 @@
 # Skills
 
-可在 Cursor、Claude Code、Codex 等支持 [Agent Skills](https://agentskills.io) 标准的工具中复用的技能集合。
+A collection of reusable Agent Skills for tools that support the [Agent Skills](https://agentskills.io) standard, including Cursor, Claude Code, and Codex.
 
-每个技能是一个目录，内含必需的 `SKILL.md`（YAML frontmatter + Markdown 说明）。
+Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Markdown instructions).
 
-## 仓库内容
+中文说明见 [README-cn.md](./README-cn.md)。
 
-| 技能 | 说明 |
-|------|------|
-| [`auto-summary-context`](./auto-summary-context/) | 新问题开始时检查 context 用量；≥70% 时先压缩对话历史再继续 |
-| [`memory-skill`](./memory-skill/) | 对话结束后整理关键词总结到 `talk_summary.md`，降低后续 token 消耗 |
+## Contents
 
-> **注意**：`auto-summary-context` 原文依赖 Cursor 的 `/summarize`。在 Claude Code / Codex 中请改用对应工具的压缩/总结命令（见下方「工具差异」）。
+| Skill | Description |
+|-------|-------------|
+| [`auto-summary-context`](./auto-summary-context/) | At the start of a new question, check context usage; if ≥70%, compress history before continuing |
+| [`memory-skill`](./memory-skill/) | After a conversation, write a keyword summary to `talk_summary.md` to reduce later token use |
 
-## 目录结构
+> **Note:** `auto-summary-context` depends on Cursor’s `/summarize`. In Claude Code / Codex, use the equivalent compact/summarize command for that tool (see [Tool differences](#tool-differences)).
+
+## Layout
 
 ```text
 Skills/
 ├── README.md
+├── README-cn.md
 ├── auto-summary-context/
 │   └── SKILL.md
 └── memory-skill/
     └── SKILL.md
 ```
 
-## 快速开始
-
-任选一种方式获取本仓库：
+## Quick start
 
 ```bash
-# 克隆（按你的远程地址调整）
 git clone git@github.com:HanochZhu/Skills.git
 cd Skills
-
-# 或从本 monorepo 复制
-# cp -R /path/to/lsp/Skills/<skill-name> <目标路径>/
 ```
 
-然后按目标工具把技能目录放到对应路径（见下）。
+Then copy each skill directory into the path expected by your tool (below).
 
 ---
 
 ## Claude Code
 
-Claude Code 会自动扫描技能目录；放好后重启会话或开新会话即可。
+Claude Code scans skill directories automatically. Restart or start a new session after installing.
 
-| 范围 | 路径 | 适用 |
-|------|------|------|
-| 个人（全局） | `~/.claude/skills/<skill-name>/SKILL.md` | 所有项目 |
-| 项目 | `.claude/skills/<skill-name>/SKILL.md` | 当前仓库 |
+| Scope | Path | Applies to |
+|-------|------|------------|
+| Personal (global) | `~/.claude/skills/<skill-name>/SKILL.md` | All projects |
+| Project | `.claude/skills/<skill-name>/SKILL.md` | Current repo |
 
-### 安装示例（个人）
+### Personal install
 
 ```bash
 mkdir -p ~/.claude/skills
 cp -R auto-summary-context memory-skill ~/.claude/skills/
 ```
 
-### 安装示例（项目）
+### Project install
 
 ```bash
 mkdir -p .claude/skills
 cp -R auto-summary-context memory-skill .claude/skills/
 ```
 
-### 使用
+### Usage
 
-- 自动：任务描述匹配 `description` 时由 Claude 选用
-- 手动：在对话中输入 `/skill-name`（如 `/memory-skill`）
-- 排查：`/doctor` 可检查技能是否被加载或描述被截断
+- Automatic: Claude picks a skill when the task matches its `description`
+- Manual: type `/skill-name` (e.g. `/memory-skill`)
+- Diagnose: `/doctor` to check whether skills load or descriptions are truncated
 
-官方文档：[Claude Code Skills](https://code.claude.com/docs/en/skills)
+Docs: [Claude Code Skills](https://code.claude.com/docs/en/skills)
 
 ---
 
-## Codex（OpenAI Codex CLI）
+## Codex (OpenAI Codex CLI)
 
-Codex 同样识别含 `SKILL.md` 的技能目录。
+Codex also discovers directories that contain `SKILL.md`.
 
-| 范围 | 路径 | 适用 |
-|------|------|------|
-| 个人（常见） | `~/.codex/skills/<skill-name>/SKILL.md` | 当前用户 |
-| 个人（Agent 约定） | `~/.agents/skills/<skill-name>/SKILL.md` | 跨项目 |
-| 项目 | `.agents/skills/<skill-name>/SKILL.md` | 当前仓库 |
+| Scope | Path | Applies to |
+|-------|------|------------|
+| Personal (common) | `~/.codex/skills/<skill-name>/SKILL.md` | Current user |
+| Personal (Agent convention) | `~/.agents/skills/<skill-name>/SKILL.md` | Cross-project |
+| Project | `.agents/skills/<skill-name>/SKILL.md` | Current repo |
 
-### 手动安装（推荐）
+### Manual install (recommended)
 
 ```bash
-# 安装到 Codex 用户技能目录
+# Codex user skills
 mkdir -p ~/.codex/skills
 cp -R auto-summary-context memory-skill ~/.codex/skills/
 
-# 或安装到 Agent Skills 个人目录
+# Or Agent Skills personal directory
 mkdir -p ~/.agents/skills
 cp -R auto-summary-context memory-skill ~/.agents/skills/
 ```
 
-安装后**重启 Codex**（或新开会话），用 `/skills` 确认是否出现。
+**Restart Codex** (or open a new session), then confirm with `/skills`.
 
-### 从 GitHub 安装（可选）
+### Install from GitHub (optional)
 
-在 Codex 会话中使用内置 `$skill-installer`，指向本仓库中某个技能目录，例如：
+In a Codex session, use the built-in `$skill-installer` pointed at a skill directory in this repo:
 
 ```text
 $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memory-skill
 ```
 
-（需仓库已 push 且路径可访问。）
+(Requires the repo to be public/accessible.)
 
-### 使用
+### Usage
 
-- `/skills`：浏览已安装技能
-- `$skill-name` 或 `/use skill-name`：显式加载
-- 描述匹配时也可隐式触发
+- `/skills` — list installed skills
+- `$skill-name` or `/use skill-name` — load explicitly
+- Implicit trigger when the task matches the skill `description`
 
 ---
 
 ## Cursor
 
-| 范围 | 路径 | 适用 |
-|------|------|------|
-| 个人 | `~/.cursor/skills/<skill-name>/SKILL.md` | 所有项目 |
-| 项目 | `.cursor/skills/<skill-name>/SKILL.md` | 当前仓库 |
+| Scope | Path | Applies to |
+|-------|------|------------|
+| Personal | `~/.cursor/skills/<skill-name>/SKILL.md` | All projects |
+| Project | `.cursor/skills/<skill-name>/SKILL.md` | Current repo |
 
-> 不要写入 `~/.cursor/skills-cursor/`（Cursor 内置技能目录）。
+> Do not write into `~/.cursor/skills-cursor/` (Cursor’s built-in skills directory).
 
-### 安装示例
+### Install
 
 ```bash
 mkdir -p ~/.cursor/skills
 cp -R auto-summary-context memory-skill ~/.cursor/skills/
 ```
 
-或项目级：
+Project-scoped:
 
 ```bash
 mkdir -p .cursor/skills
 cp -R auto-summary-context memory-skill .cursor/skills/
 ```
 
-本 monorepo 原始位置为 `.cursor/skill/`（单数）；对外分发统一使用本 `Skills/` 仓库结构。Cursor 官方约定为 `.cursor/skills/`（复数）。
+Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
 
 ---
 
-## 一键安装脚本示例
+## One-shot install script
 
-将仓库根目录下所有技能装到 Claude Code + Codex 个人目录：
+Install every skill in this repo into Claude Code, Codex, and Cursor personal directories:
 
 ```bash
 #!/usr/bin/env bash
@@ -167,20 +164,18 @@ do
 done
 ```
 
-保存为 `install.sh` 后执行：`chmod +x install.sh && ./install.sh`。
+Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 
 ---
 
-## 工具差异（重要）
+## Tool differences
 
-| 技能 | Cursor | Claude Code / Codex |
-|------|--------|---------------------|
-| `auto-summary-context` | 可直接用 `/summarize` | 无 `/summarize` 时，改用工具自带的 compact / summarize / 开新会话等等价能力；可按需改写 `SKILL.md` 中的命令名 |
-| `memory-skill` | 写入工作区 `talk_summary.md` | 行为相同；注意总结文件路径是否符合团队约定 |
+| Skill | Cursor | Claude Code / Codex |
+|-------|--------|---------------------|
+| `auto-summary-context` | Can use `/summarize` directly | Use the tool’s compact / summarize / new-session equivalent; edit the command name in `SKILL.md` if needed |
+| `memory-skill` | Writes workspace `talk_summary.md` | Same behavior; agree on the summary file path for your team |
 
-## 校验
-
-安装后确认：
+## Verify
 
 ```bash
 # Claude Code
@@ -193,8 +188,8 @@ ls ~/.codex/skills/*/SKILL.md
 ls ~/.cursor/skills/*/SKILL.md
 ```
 
-每个技能目录必须包含名为 **`SKILL.md`**（大小写敏感）的文件，且 frontmatter 含 `name` 与 `description`。
+Each skill directory must contain a file named **`SKILL.md`** (case-sensitive) with frontmatter fields `name` and `description`.
 
-## 许可与来源
+## Source
 
-从 workspace `.cursor/skill/` 导出，供多工具复用。按需修改后请保持 `SKILL.md` 的 Agent Skills 兼容格式。
+Exported for multi-tool reuse. Keep `SKILL.md` compatible with the Agent Skills format when you edit skills.
