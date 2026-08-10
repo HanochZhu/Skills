@@ -12,7 +12,8 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 |-------|-------------|
 | [`auto-summary-context`](./auto-summary-context/) | At the start of a new question, check context usage; if ≥70%, compress history before continuing |
 | [`memory-skill`](./memory-skill/) | After a conversation, write a keyword summary to `talk_summary.md` to reduce later token use |
-| [`explore-to-doc`](./explore-to-doc/) | Turn heavy exploration during Q&A into docs under workspace `Doc/` |
+| [`explore-to-doc`](./explore-to-doc/) | Turn heavy exploration during Q&A into docs under workspace root `docs/` |
+| [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
 
 > **Note:** `auto-summary-context` depends on Cursor’s `/summarize`. In Claude Code / Codex, use the equivalent compact/summarize command for that tool (see [Tool differences](#tool-differences)).
 
@@ -26,8 +27,11 @@ Skills/
 │   └── SKILL.md
 ├── memory-skill/
 │   └── SKILL.md
-└── explore-to-doc/
-    └── SKILL.md
+├── explore-to-doc/
+│   └── SKILL.md
+└── memwalker/
+    ├── SKILL.md
+    └── reference.md
 ```
 
 ## Quick start
@@ -54,14 +58,14 @@ Claude Code scans skill directories automatically. Restart or start a new sessio
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.claude/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.claude/skills/
 ```
 
 ### Project install
 
 ```bash
 mkdir -p .claude/skills
-cp -R auto-summary-context memory-skill explore-to-doc .claude/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker .claude/skills/
 ```
 
 ### Usage
@@ -89,11 +93,11 @@ Codex also discovers directories that contain `SKILL.md`.
 ```bash
 # Codex user skills
 mkdir -p ~/.codex/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.codex/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.codex/skills/
 
 # Or Agent Skills personal directory
 mkdir -p ~/.agents/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.agents/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.agents/skills/
 ```
 
 **Restart Codex** (or open a new session), then confirm with `/skills`.
@@ -129,14 +133,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memory-sk
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.cursor/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.cursor/skills/
 ```
 
 Project-scoped:
 
 ```bash
 mkdir -p .cursor/skills
-cp -R auto-summary-context memory-skill explore-to-doc .cursor/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker .cursor/skills/
 ```
 
 Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
@@ -177,7 +181,8 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 |-------|--------|---------------------|
 | `auto-summary-context` | Can use `/summarize` directly | Use the tool’s compact / summarize / new-session equivalent; edit the command name in `SKILL.md` if needed |
 | `memory-skill` | Writes workspace `talk_summary.md` | Same behavior; agree on the summary file path for your team |
-| `explore-to-doc` | Writes workspace `Doc/*.md` | Same behavior; agree on the `Doc/` path for your team |
+| `explore-to-doc` | Writes workspace root `docs/*.md` (+ `docs/index.md`) | Same behavior; keep workspace-level docs out of per-package `docs/` |
+| `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
 
 ## Verify
 

@@ -12,7 +12,8 @@
 |------|------|
 | [`auto-summary-context`](./auto-summary-context/) | 新问题开始时检查 context 用量；≥70% 时先压缩对话历史再继续 |
 | [`memory-skill`](./memory-skill/) | 对话结束后整理关键词总结到 `talk_summary.md`，降低后续 token 消耗 |
-| [`explore-to-doc`](./explore-to-doc/) | 将需要较多探索的提问过程整理成文档，保存到工作区 `Doc/` |
+| [`explore-to-doc`](./explore-to-doc/) | 将需要较多探索的提问过程整理成文档，保存到工作区根目录 `docs/` |
+| [`memwalker`](./memwalker/) | MemWalker 交互式阅读：对长文/代码建摘要树并带推理导航，突破单次上下文限制 |
 
 > **注意**：`auto-summary-context` 原文依赖 Cursor 的 `/summarize`。在 Claude Code / Codex 中请改用对应工具的压缩/总结命令（见下方「工具差异」）。
 
@@ -26,8 +27,11 @@ Skills/
 │   └── SKILL.md
 ├── memory-skill/
 │   └── SKILL.md
-└── explore-to-doc/
-    └── SKILL.md
+├── explore-to-doc/
+│   └── SKILL.md
+└── memwalker/
+    ├── SKILL.md
+    └── reference.md
 ```
 
 ## 快速开始
@@ -54,14 +58,14 @@ Claude Code 会自动扫描技能目录；放好后重启会话或开新会话�
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.claude/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.claude/skills/
 ```
 
 ### 安装示例（项目）
 
 ```bash
 mkdir -p .claude/skills
-cp -R auto-summary-context memory-skill explore-to-doc .claude/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker .claude/skills/
 ```
 
 ### 使用
@@ -89,11 +93,11 @@ Codex 同样识别含 `SKILL.md` 的技能目录。
 ```bash
 # 安装到 Codex 用户技能目录
 mkdir -p ~/.codex/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.codex/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.codex/skills/
 
 # 或安装到 Agent Skills 个人目录
 mkdir -p ~/.agents/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.agents/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.agents/skills/
 ```
 
 安装后**重启 Codex**（或新开会话），用 `/skills` 确认是否出现。
@@ -129,14 +133,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memory-sk
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R auto-summary-context memory-skill explore-to-doc ~/.cursor/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.cursor/skills/
 ```
 
 或项目级：
 
 ```bash
 mkdir -p .cursor/skills
-cp -R auto-summary-context memory-skill explore-to-doc .cursor/skills/
+cp -R auto-summary-context memory-skill explore-to-doc memwalker .cursor/skills/
 ```
 
 Cursor 官方约定为 `.cursor/skills/`（复数）。本仓库为面向多工具的统一分发结构。
@@ -177,7 +181,8 @@ done
 |------|--------|---------------------|
 | `auto-summary-context` | 可直接用 `/summarize` | 无 `/summarize` 时，改用工具自带的 compact / summarize / 开新会话等等价能力；可按需改写 `SKILL.md` 中的命令名 |
 | `memory-skill` | 写入工作区 `talk_summary.md` | 行为相同；注意总结文件路径是否符合团队约定 |
-| `explore-to-doc` | 写入工作区 `Doc/*.md` | 行为相同；注意 `Doc/` 路径是否符合团队约定 |
+| `explore-to-doc` | 写入工作区根 `docs/*.md`（并由 `docs/index.md` 索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
+| `memwalker` | 构建/导航摘要树（可选落盘 `.memwalker/`） | 各工具行为相同 |
 
 ## 校验
 
