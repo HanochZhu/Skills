@@ -75,6 +75,7 @@ description: >-
 
 ## 与其它技能的关系
 
-- `memory-skill`：对话级关键词总结 → `talk_summary.md`
+- `memwalker`：长材料交互式阅读（摘要树 + 导航）→ `.memwalker/` 等
+- `auto-summary-context`：会话 context 过高时压缩对话历史
 - 本技能：单次/专题探索过程 → `docs/*.md`（并由 `docs/index.md` 索引）
-- 二者可同时存在，勿互相替代
+- 可并存，勿互相替代

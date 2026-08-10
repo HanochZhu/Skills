@@ -11,7 +11,6 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 | Skill | Description |
 |-------|-------------|
 | [`auto-summary-context`](./auto-summary-context/) | At the start of a new question, check context usage; if ≥70%, compress history before continuing |
-| [`memory-skill`](./memory-skill/) | After a conversation, write a keyword summary to `talk_summary.md` to reduce later token use |
 | [`explore-to-doc`](./explore-to-doc/) | Turn heavy exploration during Q&A into docs under workspace root `docs/` |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
 
@@ -24,8 +23,6 @@ Skills/
 ├── README.md
 ├── README-cn.md
 ├── auto-summary-context/
-│   └── SKILL.md
-├── memory-skill/
 │   └── SKILL.md
 ├── explore-to-doc/
 │   └── SKILL.md
@@ -58,20 +55,20 @@ Claude Code scans skill directories automatically. Restart or start a new sessio
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.claude/skills/
+cp -R auto-summary-context explore-to-doc memwalker ~/.claude/skills/
 ```
 
 ### Project install
 
 ```bash
 mkdir -p .claude/skills
-cp -R auto-summary-context memory-skill explore-to-doc memwalker .claude/skills/
+cp -R auto-summary-context explore-to-doc memwalker .claude/skills/
 ```
 
 ### Usage
 
 - Automatic: Claude picks a skill when the task matches its `description`
-- Manual: type `/skill-name` (e.g. `/memory-skill`)
+- Manual: type `/skill-name` (e.g. `/memwalker`)
 - Diagnose: `/doctor` to check whether skills load or descriptions are truncated
 
 Docs: [Claude Code Skills](https://code.claude.com/docs/en/skills)
@@ -93,11 +90,11 @@ Codex also discovers directories that contain `SKILL.md`.
 ```bash
 # Codex user skills
 mkdir -p ~/.codex/skills
-cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.codex/skills/
+cp -R auto-summary-context explore-to-doc memwalker ~/.codex/skills/
 
 # Or Agent Skills personal directory
 mkdir -p ~/.agents/skills
-cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.agents/skills/
+cp -R auto-summary-context explore-to-doc memwalker ~/.agents/skills/
 ```
 
 **Restart Codex** (or open a new session), then confirm with `/skills`.
@@ -107,7 +104,7 @@ cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.agents/skill
 In a Codex session, use the built-in `$skill-installer` pointed at a skill directory in this repo:
 
 ```text
-$skill-installer install https://github.com/HanochZhu/Skills/tree/main/memory-skill
+$skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 ```
 
 (Requires the repo to be public/accessible.)
@@ -133,14 +130,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memory-sk
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R auto-summary-context memory-skill explore-to-doc memwalker ~/.cursor/skills/
+cp -R auto-summary-context explore-to-doc memwalker ~/.cursor/skills/
 ```
 
 Project-scoped:
 
 ```bash
 mkdir -p .cursor/skills
-cp -R auto-summary-context memory-skill explore-to-doc memwalker .cursor/skills/
+cp -R auto-summary-context explore-to-doc memwalker .cursor/skills/
 ```
 
 Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
@@ -180,7 +177,6 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 | Skill | Cursor | Claude Code / Codex |
 |-------|--------|---------------------|
 | `auto-summary-context` | Can use `/summarize` directly | Use the tool’s compact / summarize / new-session equivalent; edit the command name in `SKILL.md` if needed |
-| `memory-skill` | Writes workspace `talk_summary.md` | Same behavior; agree on the summary file path for your team |
 | `explore-to-doc` | Writes workspace root `docs/*.md` (+ `docs/index.md`) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
 
