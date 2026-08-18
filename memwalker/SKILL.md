@@ -3,25 +3,59 @@ name: memwalker
 description: >-
   Apply MemWalker interactive reading: build a hierarchical summary tree over
   long text/code, then navigate it with reasoning, working memory, and revert.
-  Use when the user mentions MemWalker, memory maze, interactive reading of long
-  documents, context exceeds what fits in one pass, long-doc QA, or navigating
-  large files/logs/codebases by summarize-then-walk.
+  Scope: long docs/logs/transcripts/large modules that exceed one reliable read;
+  long-doc QA needing an explainable path. Not for short files, known-path edits,
+  or simple grep hits. Use when the user mentions MemWalker, memory maze,
+  interactive reading, or summarize-then-walk navigation.
 ---
 
 # MemWalker（交互式长文阅读）
 
 基于论文 *Walking Down the Memory Maze*（Chen et al., arXiv:2310.05029）：把有限上下文的模型当作**交互式阅读代理**，而不是一次性塞进全文。
 
-## 何时启用
+## 适用范围
 
-满足任一条件时启用：
+MemWalker 只处理**外部长材料**上的「先建摘要树、再按 query 行走」；不压缩当前对话（那是 `auto-summary-context`），也不替代定点检索。
 
-- 单文件/文档/日志过长，无法一次可靠读完并作答
+### 适用材料
+
+| 类型 | 典型对象 | 说明 |
+|------|----------|------|
+| 长文档 | 设计稿、规格、论文、会议纪要、API 手册 | 需跨多段综合或定位细节 |
+| 长日志 / dump | 构建日志、运行日志、trace、崩溃栈合并文本 | 关键词检索易漏上下文 |
+| 长对话 / transcript | 导出的聊天记录、客服会话、评审纪要 | 答案分散在多轮中 |
+| 大模块代码 | 单文件过长，或跨多文件的子系统 | 目录/文件/函数块可映射为树节点 |
+| 用户点名 | 明确要求 MemWalker / memory tree / interactive reading | 即使材料中等长度也可启用 |
+
+### 规模阈值（经验）
+
+- **建议启用**：单源已超过一次 `Read` 的可靠窗口（约数千行 / 数万 tokens），或「截断后读」会明显丢线索
+- **可选用**：材料中等，但问题依赖多段对照，且需要可回溯的阅读路径
+- **不必启用**：材料可一次读完；或路径/符号已知，用 `Grep`/`Glob`/`Read` 即可命中
+
+### 适用任务
+
+- 长文问答（事实抽取、条件/约束汇总、多处证据对齐）
+- 大模块理解与定位（「某能力在哪实现」「调用链大致落在哪几处」）
+- 需要**可解释路径**的阅读（选了哪支、为何回退、最终依据哪段原文）
+- 同一长源上的**多轮不同 query**（Stage 1 树可缓存复用）
+
+### 明确不适用
+
+- 短文件、片段级问答、已知路径的定点编辑
+- 简单符号/字符串检索就能直接命中的问题
+- 需要**改代码/写文档**本身（可先 MemWalker 定位，再交回普通编辑流程）
+- **当前会话** context 爆满（用 `auto-summary-context`，不要对本对话建 MemWalker 树）
+- 目标是把探索过程沉淀成项目文档（用 `explore-to-doc`；可将 tree/trajectory 引用过去）
+
+### 何时启用（触发条件）
+
+满足任一即可启用：
+
+- 材料落在上方「适用材料」且达到规模阈值，无法一次可靠读完并作答
 - 用户要求按 MemWalker / memory tree / interactive reading 处理
-- 长文问答、长对话复盘、大模块代码定位，且检索/截断效果不稳
-- 需要**可解释路径**（选了哪一段、为何回退、最终依据哪段原文）
-
-短文件、已知路径的定点编辑、简单 grep 能直接命中：**不启用**。
+- 长文问答 / 长对话复盘 / 大模块定位，且检索或截断效果不稳
+- 需要可解释的导航轨迹与原文依据
 
 ## 两阶段流程（必须）
 
