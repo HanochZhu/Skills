@@ -11,7 +11,7 @@
 | 技能 | 说明 |
 |------|------|
 | [`auto-summary-context`](./auto-summary-context/) | 新问题开始时检查 context 用量；≥70% 时先压缩对话历史再继续 |
-| [`explore-to-doc`](./explore-to-doc/) | 将需要较多探索的提问过程整理成文档，保存到工作区根目录 `docs/` |
+| [`explore-to-doc`](./explore-to-doc/) | 探索写入 `docs/`（`index.md` 索引）；临时 review 写入 `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker 交互式阅读：对长文/代码建摘要树并带推理导航，突破单次上下文限制 |
 
 > **注意**：`auto-summary-context` 原文依赖 Cursor 的 `/summarize`。在 Claude Code / Codex 中请改用对应工具的压缩/总结命令（见下方「工具差异」）。
@@ -177,7 +177,7 @@ done
 | 技能 | Cursor | Claude Code / Codex |
 |------|--------|---------------------|
 | `auto-summary-context` | 可直接用 `/summarize` | 无 `/summarize` 时，改用工具自带的 compact / summarize / 开新会话等等价能力；可按需改写 `SKILL.md` 中的命令名 |
-| `explore-to-doc` | 写入工作区根 `docs/*.md`（并由 `docs/index.md` 索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
+| `explore-to-doc` | 探索写入 `docs/*.md`（`docs/index.md` 索引）；临时 review 写入 `docs/tmp/`（不入索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
 | `memwalker` | 构建/导航摘要树（可选落盘 `.memwalker/`） | 各工具行为相同 |
 
 ## 校验
