@@ -144,7 +144,7 @@ Task Progress:
 
 | 技能 | 关系 |
 |------|------|
-| `explore-to-doc` | 探索过程落档；MemWalker 的 tree/trajectory 可写入同一 docs 或引用 `.memwalker/` |
+| `explore-to-doc` | 探索过程落档到 `docs/explore/<topic>/`；MemWalker 的 tree/trajectory 可引用过去或留在 `.memwalker/` |
 | `auto-summary-context` | 压缩**当前对话**；MemWalker 处理的是**外部长材料** |
 
 ## 局限（论文 Limitations）
