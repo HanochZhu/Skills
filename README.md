@@ -11,7 +11,7 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 | Skill | Description |
 |-------|-------------|
 | [`auto-summary-context`](./auto-summary-context/) | At the start of a new question, check context usage; if ≥70%, compress history before continuing |
-| [`explore-to-doc`](./explore-to-doc/) | Exploration docs under `docs/` (indexed); temporary reviews under `docs/tmp/` |
+| [`explore-to-doc`](./explore-to-doc/) | Exploration docs under `docs/` (indexed); design/architecture from agent chats under `docs/design/`; temporary reviews under `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
 
 > **Note:** `auto-summary-context` depends on Cursor’s `/summarize`. In Claude Code / Codex, use the equivalent compact/summarize command for that tool (see [Tool differences](#tool-differences)).
@@ -177,7 +177,7 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 | Skill | Cursor | Claude Code / Codex |
 |-------|--------|---------------------|
 | `auto-summary-context` | Can use `/summarize` directly | Use the tool’s compact / summarize / new-session equivalent; edit the command name in `SKILL.md` if needed |
-| `explore-to-doc` | Exploration docs under `docs/*.md` (indexed by `docs/index.md`); temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
+| `explore-to-doc` | Exploration docs under `docs/*.md` (indexed); design/architecture from agent chats under `docs/design/` (indexed separately); temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
 
 ## Verify
