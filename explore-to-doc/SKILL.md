@@ -238,5 +238,4 @@ description: <一句话：问题是什么，以及解决思路>
 ## 与其它技能的关系
 
 - `memwalker`：长材料交互式阅读（摘要树 + 导航）→ `.memwalker/` 等；从对话/长文抽出的设计结论仍写 `docs/design/`
-- `auto-summary-context`：会话 context 过高时压缩对话历史
 - 本技能负责先读索引、落档位置与格式；四套记忆仍分开，不互相替代

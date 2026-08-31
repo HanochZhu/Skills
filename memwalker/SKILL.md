@@ -15,7 +15,7 @@ description: >-
 
 ## 适用范围
 
-MemWalker 只处理**外部长材料**上的「先建摘要树、再按 query 行走」；不压缩当前对话（那是 `auto-summary-context`），也不替代定点检索。
+MemWalker 只处理**外部长材料**上的「先建摘要树、再按 query 行走」；不压缩当前对话，也不替代定点检索。
 
 ### 适用材料
 
@@ -45,7 +45,7 @@ MemWalker 只处理**外部长材料**上的「先建摘要树、再按 query �
 - 短文件、片段级问答、已知路径的定点编辑
 - 简单符号/字符串检索就能直接命中的问题
 - 需要**改代码/写文档**本身（可先 MemWalker 定位，再交回普通编辑流程）
-- **当前会话** context 爆满（用 `auto-summary-context`，不要对本对话建 MemWalker 树）
+- **当前会话** context 爆满（不要对本对话建 MemWalker 树）
 - 目标是把探索过程沉淀成项目文档（用 `explore-to-doc`；可将 tree/trajectory 引用过去）
 
 ### 何时启用（触发条件）
@@ -145,7 +145,6 @@ Task Progress:
 | 技能 | 关系 |
 |------|------|
 | `explore-to-doc` | 探索过程落档到 `docs/explore/<topic>/`；MemWalker 的 tree/trajectory 可引用过去或留在 `.memwalker/` |
-| `auto-summary-context` | 压缩**当前对话**；MemWalker 处理的是**外部长材料** |
 
 ## 局限（论文 Limitations）
 
