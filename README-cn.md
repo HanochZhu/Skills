@@ -12,6 +12,7 @@
 |------|------|
 | [`explore-to-doc`](./explore-to-doc/) | 先读 `docs/index.md` 再决定是否探索；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker 交互式阅读：对长文/代码建摘要树并带推理导航，突破单次上下文限制 |
+| [`sandbox-fetch-optimize`](./sandbox-fetch-optimize/) | 沙盒优先的拉数优化：先量 baseline，再对比多方案，对比有收益才落地 |
 | [`web-design`](./web-design/) | 网页视觉设计：从 PRD / URL / 截图 / 关键词先产出 `DESIGN.md`，确认后再生成 UI 代码。上游：[xiaopu-ai/web-design](https://github.com/xiaopu-ai/web-design) |
 
 ## 目录结构
@@ -23,6 +24,9 @@ Skills/
 ├── explore-to-doc/
 │   └── SKILL.md
 ├── memwalker/
+│   ├── SKILL.md
+│   └── reference.md
+├── sandbox-fetch-optimize/
 │   ├── SKILL.md
 │   └── reference.md
 └── web-design/
@@ -56,14 +60,14 @@ Claude Code 会自动扫描技能目录；放好后重启会话或开新会话�
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R explore-to-doc memwalker web-design ~/.claude/skills/
+cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.claude/skills/
 ```
 
 ### 安装示例（项目）
 
 ```bash
 mkdir -p .claude/skills
-cp -R explore-to-doc memwalker web-design .claude/skills/
+cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design .claude/skills/
 ```
 
 ### 使用
@@ -91,11 +95,11 @@ Codex 同样识别含 `SKILL.md` 的技能目录。
 ```bash
 # 安装到 Codex 用户技能目录
 mkdir -p ~/.codex/skills
-cp -R explore-to-doc memwalker web-design ~/.codex/skills/
+cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.codex/skills/
 
 # 或安装到 Agent Skills 个人目录
 mkdir -p ~/.agents/skills
-cp -R explore-to-doc memwalker web-design ~/.agents/skills/
+cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.agents/skills/
 ```
 
 安装后**重启 Codex**（或新开会话），用 `/skills` 确认是否出现。
@@ -131,14 +135,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R explore-to-doc memwalker web-design ~/.cursor/skills/
+cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.cursor/skills/
 ```
 
 或项目级：
 
 ```bash
 mkdir -p .cursor/skills
-cp -R explore-to-doc memwalker web-design .cursor/skills/
+cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design .cursor/skills/
 ```
 
 Cursor 官方约定为 `.cursor/skills/`（复数）。本仓库为面向多工具的统一分发结构。
@@ -179,6 +183,7 @@ done
 |------|--------|---------------------|
 | `explore-to-doc` | 先读 `docs/index.md`；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/`（不入索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
 | `memwalker` | 构建/导航摘要树（可选落盘 `.memwalker/`） | 各工具行为相同 |
+| `sandbox-fetch-optimize` | 沙盒对比拉数成本，score 赢了才落地 | 各工具行为相同 |
 | `web-design` | 同样先出 `DESIGN.md` 再出代码；抓取参考站时用自带 Python / Playwright 脚本 | 各工具行为相同 |
 
 ## 校验
