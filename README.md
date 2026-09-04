@@ -12,6 +12,7 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 |-------|-------------|
 | [`explore-to-doc`](./explore-to-doc/) | Read `docs/index.md` before exploring; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
+| [`review-fix`](./review-fix/) | Verify review findings against current code, reproduce each confirmed issue with a failing test, then fix only after reproduction succeeds |
 | [`sandbox-fetch-optimize`](./sandbox-fetch-optimize/) | Sandbox-first data-fetch optimization: measure baseline cost, compare multiple schemes, adopt only when the comparison wins |
 | [`web-design`](./web-design/) | Spec-first web visual design: produce `DESIGN.md` from PRD / URL / screenshot / keywords, then generate UI code. Upstream: [xiaopu-ai/web-design](https://github.com/xiaopu-ai/web-design) |
 
@@ -26,6 +27,8 @@ Skills/
 ├── memwalker/
 │   ├── SKILL.md
 │   └── reference.md
+├── review-fix/
+│   └── SKILL.md
 ├── sandbox-fetch-optimize/
 │   ├── SKILL.md
 │   └── reference.md
@@ -60,14 +63,14 @@ Claude Code scans skill directories automatically. Restart or start a new sessio
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.claude/skills/
+cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
 ```
 
 ### Project install
 
 ```bash
 mkdir -p .claude/skills
-cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design .claude/skills/
+cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
 ```
 
 ### Usage
@@ -95,11 +98,11 @@ Codex also discovers directories that contain `SKILL.md`.
 ```bash
 # Codex user skills
 mkdir -p ~/.codex/skills
-cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.codex/skills/
+cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
 
 # Or Agent Skills personal directory
 mkdir -p ~/.agents/skills
-cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.agents/skills/
+cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
 ```
 
 **Restart Codex** (or open a new session), then confirm with `/skills`.
@@ -135,14 +138,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design ~/.cursor/skills/
+cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
 ```
 
 Project-scoped:
 
 ```bash
 mkdir -p .cursor/skills
-cp -R explore-to-doc memwalker sandbox-fetch-optimize web-design .cursor/skills/
+cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
 ```
 
 Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
@@ -183,6 +186,7 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 |-------|--------|---------------------|
 | `explore-to-doc` | Read `docs/index.md` first; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
+| `review-fix` | Verify review vs current code; failing test first; fix only after RED | Same behavior across tools |
 | `sandbox-fetch-optimize` | Sandbox-first fetch cost compare; adopt only when score wins | Same behavior across tools |
 | `web-design` | Same spec-first flow (`DESIGN.md` then code); URL crawl uses bundled Python scripts / Playwright | Same behavior across tools |
 
