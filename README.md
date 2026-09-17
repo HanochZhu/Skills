@@ -10,6 +10,7 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 
 | Skill | Description |
 |-------|-------------|
+| [`expand-first-mention`](./expand-first-mention/) | On first mention in each conversation, expand new keywords and abbreviations with their full description (e.g. OSS = Open Source Software（开源版 / 自托管 SDK）) so short forms are not misleading |
 | [`explore-to-doc`](./explore-to-doc/) | Read `docs/index.md` before exploring; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
 | [`review-fix`](./review-fix/) | Verify review findings against current code, reproduce each confirmed issue with a failing test, then fix only after reproduction succeeds |
@@ -22,6 +23,8 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 Skills/
 ├── README.md
 ├── README-cn.md
+├── expand-first-mention/
+│   └── SKILL.md
 ├── explore-to-doc/
 │   └── SKILL.md
 ├── memwalker/
@@ -63,14 +66,14 @@ Claude Code scans skill directories automatically. Restart or start a new sessio
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
+cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
 ```
 
 ### Project install
 
 ```bash
 mkdir -p .claude/skills
-cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
+cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
 ```
 
 ### Usage
@@ -98,11 +101,11 @@ Codex also discovers directories that contain `SKILL.md`.
 ```bash
 # Codex user skills
 mkdir -p ~/.codex/skills
-cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
+cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
 
 # Or Agent Skills personal directory
 mkdir -p ~/.agents/skills
-cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
+cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
 ```
 
 **Restart Codex** (or open a new session), then confirm with `/skills`.
@@ -138,14 +141,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
+cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
 ```
 
 Project-scoped:
 
 ```bash
 mkdir -p .cursor/skills
-cp -R explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
+cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
 ```
 
 Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
@@ -184,6 +187,7 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 
 | Skill | Cursor | Claude Code / Codex |
 |-------|--------|---------------------|
+| `expand-first-mention` | Expand jargon/abbreviations on first mention in the conversation | Same behavior across tools |
 | `explore-to-doc` | Read `docs/index.md` first; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
 | `review-fix` | Verify review vs current code; failing test first; fix only after RED | Same behavior across tools |
