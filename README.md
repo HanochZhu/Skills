@@ -10,7 +10,7 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 
 | Skill | Description |
 |-------|-------------|
-| [`expand-first-mention`](./expand-first-mention/) | Format and examples for expanding ambiguous abbreviations on first mention. Daily behavior is a one-line always-on Cursor rule (`cursor-rule.mdc`), not this skill |
+| [`expand-first-mention`](./expand-first-mention/) | Format and examples for expanding ambiguous abbreviations on first mention. Daily behavior is `always-on.md` pasted into each IDE's persistent instructions, not this skill |
 | [`explore-to-doc`](./explore-to-doc/) | Read `docs/index.md` before exploring; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
 | [`review-fix`](./review-fix/) | Verify review findings against current code, reproduce each confirmed issue with a failing test, then fix only after reproduction succeeds |
@@ -25,6 +25,7 @@ Skills/
 ├── README-cn.md
 ├── expand-first-mention/
 │   ├── SKILL.md
+│   ├── always-on.md
 │   └── cursor-rule.mdc
 ├── explore-to-doc/
 │   └── SKILL.md
@@ -170,6 +171,24 @@ cp expand-first-mention/cursor-rule.mdc .cursor/rules/expand-first-mention.mdc
 
 ---
 
+## Always-on rule (other IDEs)
+
+Skills load only when the task matches. For first-mention expansion to apply in every chat, paste [`expand-first-mention/always-on.md`](./expand-first-mention/always-on.md) into that tool's persistent instructions (append; do not replace existing content).
+
+| Tool | Personal (all projects) | Project |
+|------|-------------------------|---------|
+| Cursor | `~/.cursor/rules/expand-first-mention.mdc` (copy `cursor-rule.mdc`) | `.cursor/rules/expand-first-mention.mdc` |
+| Claude Code | `~/.claude/CLAUDE.md` | `CLAUDE.md` |
+| Codex | user instructions / `~/.codex/` config notes | `AGENTS.md` |
+| Gemini CLI | `~/.gemini/GEMINI.md` | `GEMINI.md` |
+| GitHub Copilot (VS Code / JetBrains) | Copilot user instructions | `.github/copilot-instructions.md` |
+| Windsurf | Windsurf user rules | `.windsurfrules` |
+| OpenCode / generic Agent Skills hosts | `~/.agents/` or host equivalent | `AGENTS.md` |
+
+Cursor is the only one with a native `alwaysApply` rule file. The others treat `always-on.md` as a snippet to include.
+
+---
+
 ## One-shot install script
 
 Install every skill in this repo into Claude Code, Codex, and Cursor personal directories:
@@ -202,7 +221,7 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 
 | Skill | Cursor | Claude Code / Codex |
 |-------|--------|---------------------|
-| `expand-first-mention` | Always-on `.cursor/rules` one-liner; skill is format/examples only | Paste the same one-liner into CLAUDE.md / AGENTS.md; skill is format reference |
+| `expand-first-mention` | Always-on `.cursor/rules` (`cursor-rule.mdc`); skill is format/examples only | Paste `always-on.md` into CLAUDE.md / AGENTS.md / GEMINI.md / Copilot instructions; skill is format reference |
 | `explore-to-doc` | Read `docs/index.md` first; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
 | `review-fix` | Verify review vs current code; failing test first; fix only after RED | Same behavior across tools |

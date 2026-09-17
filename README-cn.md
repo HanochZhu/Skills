@@ -10,7 +10,7 @@
 
 | 技能 | 说明 |
 |------|------|
-| [`expand-first-mention`](./expand-first-mention/) | 易误导缩写的首次展开格式与反例。日常遵守靠 Cursor always-on 短规则（`cursor-rule.mdc`），不是本 skill |
+| [`expand-first-mention`](./expand-first-mention/) | 易误导缩写的首次展开格式与反例。日常遵守靠把 `always-on.md` 贴进各 IDE 常驻说明，不是本 skill |
 | [`explore-to-doc`](./explore-to-doc/) | 先读 `docs/index.md` 再决定是否探索；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker 交互式阅读：对长文/代码建摘要树并带推理导航，突破单次上下文限制 |
 | [`review-fix`](./review-fix/) | 先核实现状，再写测试复现，复现成功才改代码 |
@@ -25,6 +25,7 @@ Skills/
 ├── README-cn.md
 ├── expand-first-mention/
 │   ├── SKILL.md
+│   ├── always-on.md
 │   └── cursor-rule.mdc
 ├── explore-to-doc/
 │   └── SKILL.md
@@ -170,6 +171,24 @@ cp expand-first-mention/cursor-rule.mdc .cursor/rules/expand-first-mention.mdc
 
 ---
 
+## 常驻规则（其他 IDE）
+
+Skill 只在任务匹配时才会加载。要让「首次展开」每条对话都生效，把 [`expand-first-mention/always-on.md`](./expand-first-mention/always-on.md) **追加**进该工具的常驻说明（不要覆盖原有内容）。
+
+| 工具 | 个人（所有项目） | 项目 |
+|------|------------------|------|
+| Cursor | `~/.cursor/rules/expand-first-mention.mdc`（拷 `cursor-rule.mdc`） | `.cursor/rules/expand-first-mention.mdc` |
+| Claude Code | `~/.claude/CLAUDE.md` | `CLAUDE.md` |
+| Codex | 用户说明 / `~/.codex/` | `AGENTS.md` |
+| Gemini CLI | `~/.gemini/GEMINI.md` | `GEMINI.md` |
+| GitHub Copilot（VS Code / JetBrains） | Copilot 用户说明 | `.github/copilot-instructions.md` |
+| Windsurf | Windsurf 用户规则 | `.windsurfrules` |
+| OpenCode / 通用 Agent Skills 宿主 | `~/.agents/` 或宿主等价路径 | `AGENTS.md` |
+
+只有 Cursor 有原生 `alwaysApply` 规则文件。其它工具把 `always-on.md` 当一段可粘贴正文。
+
+---
+
 ## 一键安装脚本示例
 
 将仓库根目录下所有技能装到 Claude Code、Codex、Cursor 个人目录：
@@ -202,7 +221,7 @@ done
 
 | 技能 | Cursor | Claude Code / Codex |
 |------|--------|---------------------|
-| `expand-first-mention` | always-on `.cursor/rules` 短规则；skill 只留格式和反例 | 把同一句短规则贴进 CLAUDE.md / AGENTS.md；skill 只作格式参考 |
+| `expand-first-mention` | always-on `.cursor/rules`（`cursor-rule.mdc`）；skill 只留格式和反例 | 把 `always-on.md` 贴进 CLAUDE.md / AGENTS.md / GEMINI.md / Copilot 说明；skill 只作格式参考 |
 | `explore-to-doc` | 先读 `docs/index.md`；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/`（不入索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
 | `memwalker` | 构建/导航摘要树（可选落盘 `.memwalker/`） | 各工具行为相同 |
 | `review-fix` | 先核 review 是否属实；测试复现成功才改代码 | 各工具行为相同 |
