@@ -10,7 +10,7 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 
 | Skill | Description |
 |-------|-------------|
-| [`expand-first-mention`](./expand-first-mention/) | On first mention in each conversation, expand new keywords and abbreviations with their full description (e.g. OSS = Open Source Software（开源版 / 自托管 SDK）) so short forms are not misleading |
+| [`expand-first-mention`](./expand-first-mention/) | Format and examples for expanding ambiguous abbreviations on first mention. Daily behavior is a one-line always-on Cursor rule (`cursor-rule.mdc`), not this skill |
 | [`explore-to-doc`](./explore-to-doc/) | Read `docs/index.md` before exploring; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
 | [`review-fix`](./review-fix/) | Verify review findings against current code, reproduce each confirmed issue with a failing test, then fix only after reproduction succeeds |
@@ -24,7 +24,8 @@ Skills/
 ├── README.md
 ├── README-cn.md
 ├── expand-first-mention/
-│   └── SKILL.md
+│   ├── SKILL.md
+│   └── cursor-rule.mdc
 ├── explore-to-doc/
 │   └── SKILL.md
 ├── memwalker/
@@ -153,6 +154,20 @@ cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-opt
 
 Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
 
+`expand-first-mention` also ships an always-on Cursor rule. Copy it so every conversation picks up the one-liner without loading the skill:
+
+```bash
+mkdir -p ~/.cursor/rules
+cp expand-first-mention/cursor-rule.mdc ~/.cursor/rules/expand-first-mention.mdc
+```
+
+Project-scoped:
+
+```bash
+mkdir -p .cursor/rules
+cp expand-first-mention/cursor-rule.mdc .cursor/rules/expand-first-mention.mdc
+```
+
 ---
 
 ## One-shot install script
@@ -187,7 +202,7 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 
 | Skill | Cursor | Claude Code / Codex |
 |-------|--------|---------------------|
-| `expand-first-mention` | Expand jargon/abbreviations on first mention in the conversation | Same behavior across tools |
+| `expand-first-mention` | Always-on `.cursor/rules` one-liner; skill is format/examples only | Paste the same one-liner into CLAUDE.md / AGENTS.md; skill is format reference |
 | `explore-to-doc` | Read `docs/index.md` first; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
 | `review-fix` | Verify review vs current code; failing test first; fix only after RED | Same behavior across tools |

@@ -10,7 +10,7 @@
 
 | 技能 | 说明 |
 |------|------|
-| [`expand-first-mention`](./expand-first-mention/) | 每个对话里第一次写出新关键词/缩写时带上完整描述（如 OSS = Open Source Software（开源版 / 自托管 SDK）），避免短称误导 |
+| [`expand-first-mention`](./expand-first-mention/) | 易误导缩写的首次展开格式与反例。日常遵守靠 Cursor always-on 短规则（`cursor-rule.mdc`），不是本 skill |
 | [`explore-to-doc`](./explore-to-doc/) | 先读 `docs/index.md` 再决定是否探索；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker 交互式阅读：对长文/代码建摘要树并带推理导航，突破单次上下文限制 |
 | [`review-fix`](./review-fix/) | 先核实现状，再写测试复现，复现成功才改代码 |
@@ -24,7 +24,8 @@ Skills/
 ├── README.md
 ├── README-cn.md
 ├── expand-first-mention/
-│   └── SKILL.md
+│   ├── SKILL.md
+│   └── cursor-rule.mdc
 ├── explore-to-doc/
 │   └── SKILL.md
 ├── memwalker/
@@ -153,6 +154,20 @@ cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-opt
 
 Cursor 官方约定为 `.cursor/skills/`（复数）。本仓库为面向多工具的统一分发结构。
 
+`expand-first-mention` 另带一条 always-on Cursor 规则。拷过去后，每条对话都会遵守那句短规则，不必加载 skill：
+
+```bash
+mkdir -p ~/.cursor/rules
+cp expand-first-mention/cursor-rule.mdc ~/.cursor/rules/expand-first-mention.mdc
+```
+
+或项目级：
+
+```bash
+mkdir -p .cursor/rules
+cp expand-first-mention/cursor-rule.mdc .cursor/rules/expand-first-mention.mdc
+```
+
 ---
 
 ## 一键安装脚本示例
@@ -187,7 +202,7 @@ done
 
 | 技能 | Cursor | Claude Code / Codex |
 |------|--------|---------------------|
-| `expand-first-mention` | 每个对话首次出现的关键词/缩写写全称 | 各工具行为相同 |
+| `expand-first-mention` | always-on `.cursor/rules` 短规则；skill 只留格式和反例 | 把同一句短规则贴进 CLAUDE.md / AGENTS.md；skill 只作格式参考 |
 | `explore-to-doc` | 先读 `docs/index.md`；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/`（不入索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
 | `memwalker` | 构建/导航摘要树（可选落盘 `.memwalker/`） | 各工具行为相同 |
 | `review-fix` | 先核 review 是否属实；测试复现成功才改代码 | 各工具行为相同 |
