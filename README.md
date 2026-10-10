@@ -10,6 +10,7 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 
 | Skill | Description |
 |-------|-------------|
+| [`eli5`](./eli5/) | Explain any topic like I'm 5: a picture-heavy HTML artifact with few words. Upstream: [anthropics/claude-plugins-community/eli5](https://github.com/anthropics/claude-plugins-community/tree/main/eli5) |
 | [`expand-first-mention`](./expand-first-mention/) | Format and examples for expanding ambiguous abbreviations on first mention. Daily behavior is `always-on.md` pasted into each IDE's persistent instructions, not this skill |
 | [`explore-to-doc`](./explore-to-doc/) | Read `docs/index.md` before exploring; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
@@ -23,6 +24,8 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 Skills/
 ├── README.md
 ├── README-cn.md
+├── eli5/
+│   └── SKILL.md
 ├── expand-first-mention/
 │   ├── SKILL.md
 │   ├── always-on.md
@@ -68,14 +71,14 @@ Claude Code scans skill directories automatically. Restart or start a new sessio
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
 ```
 
 ### Project install
 
 ```bash
 mkdir -p .claude/skills
-cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
 ```
 
 ### Usage
@@ -103,11 +106,11 @@ Codex also discovers directories that contain `SKILL.md`.
 ```bash
 # Codex user skills
 mkdir -p ~/.codex/skills
-cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
+cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
 
 # Or Agent Skills personal directory
 mkdir -p ~/.agents/skills
-cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
+cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
 ```
 
 **Restart Codex** (or open a new session), then confirm with `/skills`.
@@ -143,14 +146,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
 ```
 
 Project-scoped:
 
 ```bash
 mkdir -p .cursor/skills
-cp -R expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
 ```
 
 Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
@@ -221,6 +224,7 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 
 | Skill | Cursor | Claude Code / Codex |
 |-------|--------|---------------------|
+| `eli5` | HTML picture explainer with big visuals and few words (`/eli5 <topic>`) | Same behavior; invoked as `/eli5 <topic>` |
 | `expand-first-mention` | Always-on `.cursor/rules` (`cursor-rule.mdc`); skill is format/examples only | Paste `always-on.md` into CLAUDE.md / AGENTS.md / GEMINI.md / Copilot instructions; skill is format reference |
 | `explore-to-doc` | Read `docs/index.md` first; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
