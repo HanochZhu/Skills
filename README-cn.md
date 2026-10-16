@@ -13,6 +13,7 @@
 | [`eli5`](./eli5/) | 用大图、少字的 HTML 把任意主题讲给完全不懂的人。上游：[anthropics/claude-plugins-community/eli5](https://github.com/anthropics/claude-plugins-community/tree/main/eli5) |
 | [`expand-first-mention`](./expand-first-mention/) | 易误导缩写的首次展开格式与反例。日常遵守靠把 `always-on.md` 贴进各 IDE 常驻说明，不是本 skill |
 | [`explore-to-doc`](./explore-to-doc/) | 先读 `docs/index.md` 再决定是否探索；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/` |
+| [`git-commit`](./git-commit/) | 通用 Git 提交与推送工作流：精准暂存、Conventional Commits 规范说明生成、安全提交与推送 |
 | [`memwalker`](./memwalker/) | MemWalker 交互式阅读：对长文/代码建摘要树并带推理导航，突破单次上下文限制 |
 | [`review-fix`](./review-fix/) | 先核实现状，再写测试复现，复现成功才改代码 |
 | [`sandbox-fetch-optimize`](./sandbox-fetch-optimize/) | 沙盒优先的拉数优化：先量 baseline，再对比多方案，对比有收益才落地 |
@@ -31,6 +32,8 @@ Skills/
 │   ├── always-on.md
 │   └── cursor-rule.mdc
 ├── explore-to-doc/
+│   └── SKILL.md
+├── git-commit/
 │   └── SKILL.md
 ├── memwalker/
 │   ├── SKILL.md
@@ -71,14 +74,14 @@ Claude Code 会自动扫描技能目录；放好后重启会话或开新会话�
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
 ```
 
 ### 安装示例（项目）
 
 ```bash
 mkdir -p .claude/skills
-cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
 ```
 
 ### 使用
@@ -106,11 +109,11 @@ Codex 同样识别含 `SKILL.md` 的技能目录。
 ```bash
 # 安装到 Codex 用户技能目录
 mkdir -p ~/.codex/skills
-cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
 
 # 或安装到 Agent Skills 个人目录
 mkdir -p ~/.agents/skills
-cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
 ```
 
 安装后**重启 Codex**（或新开会话），用 `/skills` 确认是否出现。
@@ -146,14 +149,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
 ```
 
 或项目级：
 
 ```bash
 mkdir -p .cursor/skills
-cp -R eli5 expand-first-mention explore-to-doc memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
 ```
 
 Cursor 官方约定为 `.cursor/skills/`（复数）。本仓库为面向多工具的统一分发结构。
@@ -227,6 +230,7 @@ done
 | `eli5` | 大图少字的 HTML 讲解（`/eli5 <topic>`） | 行为相同，用 `/eli5 <topic>` 调用 |
 | `expand-first-mention` | always-on `.cursor/rules`（`cursor-rule.mdc`）；skill 只留格式和反例 | 把 `always-on.md` 贴进 CLAUDE.md / AGENTS.md / GEMINI.md / Copilot 说明；skill 只作格式参考 |
 | `explore-to-doc` | 先读 `docs/index.md`；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/`（不入索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
+| `git-commit` | 规范化精准暂存、Conventional Commits 提交说明、安全提交与推送 | 各工具行为相同 |
 | `memwalker` | 构建/导航摘要树（可选落盘 `.memwalker/`） | 各工具行为相同 |
 | `review-fix` | 先核 review 是否属实；测试复现成功才改代码 | 各工具行为相同 |
 | `sandbox-fetch-optimize` | 沙盒对比拉数成本，score 赢了才落地 | 各工具行为相同 |
