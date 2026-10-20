@@ -14,6 +14,8 @@
 | [`expand-first-mention`](./expand-first-mention/) | 易误导缩写的首次展开格式与反例。日常遵守靠把 `always-on.md` 贴进各 IDE 常驻说明，不是本 skill |
 | [`explore-to-doc`](./explore-to-doc/) | 先读 `docs/index.md` 再决定是否探索；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/` |
 | [`git-commit`](./git-commit/) | 通用 Git 提交与推送工作流：精准暂存、Conventional Commits 规范说明生成、安全提交与推送 |
+| [`grill-me`](./grill-me/) | 用户主动发起的追问，用来把方案或设计问清楚。它会调用 `grilling`。上游：[mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) |
+| [`grilling`](./grilling/) | `grill-me` 背后的追问流程：按设计树一轮一轮问，直到每个分支都定下来。上游：[mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling) |
 | [`memwalker`](./memwalker/) | MemWalker 交互式阅读：对长文/代码建摘要树并带推理导航，突破单次上下文限制 |
 | [`review-fix`](./review-fix/) | 先核实现状，再写测试复现，复现成功才改代码 |
 | [`sandbox-fetch-optimize`](./sandbox-fetch-optimize/) | 沙盒优先的拉数优化：先量 baseline，再对比多方案，对比有收益才落地 |
@@ -35,6 +37,14 @@ Skills/
 │   └── SKILL.md
 ├── git-commit/
 │   └── SKILL.md
+├── grill-me/
+│   ├── SKILL.md
+│   ├── LICENSE
+│   └── agents/
+│       └── openai.yaml
+├── grilling/
+│   ├── SKILL.md
+│   └── LICENSE
 ├── memwalker/
 │   ├── SKILL.md
 │   └── reference.md
@@ -59,6 +69,22 @@ cd Skills
 
 然后按目标工具把技能目录放到对应路径（见下）。
 
+### 安装 `grill-me`
+
+`grill-me` 也发布在上游仓库。用下面这条命令安装那一份：
+
+```bash
+npx skills add https://github.com/mattpocock/skills --skill grill-me
+```
+
+`grill-me` 只负责开场，真正的追问在 `grilling`。本仓库里两份放在一起。`grilling` 用同样的方式安装：
+
+```bash
+npx skills add https://github.com/mattpocock/skills --skill grilling
+```
+
+按下面的命令从本仓库拷贝 `grill-me/` 和 `grilling/`，装到的是同一对技能。
+
 ---
 
 ## Claude Code
@@ -74,14 +100,14 @@ Claude Code 会自动扫描技能目录；放好后重启会话或开新会话�
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
 ```
 
 ### 安装示例（项目）
 
 ```bash
 mkdir -p .claude/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
 ```
 
 ### 使用
@@ -109,11 +135,11 @@ Codex 同样识别含 `SKILL.md` 的技能目录。
 ```bash
 # 安装到 Codex 用户技能目录
 mkdir -p ~/.codex/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
 
 # 或安装到 Agent Skills 个人目录
 mkdir -p ~/.agents/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
 ```
 
 安装后**重启 Codex**（或新开会话），用 `/skills` 确认是否出现。
@@ -149,14 +175,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
 ```
 
 或项目级：
 
 ```bash
 mkdir -p .cursor/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
 ```
 
 Cursor 官方约定为 `.cursor/skills/`（复数）。本仓库为面向多工具的统一分发结构。
@@ -231,6 +257,8 @@ done
 | `expand-first-mention` | always-on `.cursor/rules`（`cursor-rule.mdc`）；skill 只留格式和反例 | 把 `always-on.md` 贴进 CLAUDE.md / AGENTS.md / GEMINI.md / Copilot 说明；skill 只作格式参考 |
 | `explore-to-doc` | 先读 `docs/index.md`；探索写入 `docs/explore/<topic>/`；设计/架构写入 `docs/design/`；计划写入 `docs/tasks/`；临时 review 写入 `docs/tmp/`（不入索引） | 行为相同；workspace 级文档勿写入各子仓库自己的 `docs/` |
 | `git-commit` | 规范化精准暂存、Conventional Commits 提交说明、安全提交与推送 | 各工具行为相同 |
+| `grill-me` | 用户主动调用（`/grill-me`），通过调用 `grilling` 开始一场追问 | 各工具行为相同。上游安装命令见快速开始 |
+| `grilling` | 模型可调用的追问：每次只问当前这一轮，每题附上建议答案 | 各工具行为相同 |
 | `memwalker` | 构建/导航摘要树（可选落盘 `.memwalker/`） | 各工具行为相同 |
 | `review-fix` | 先核 review 是否属实；测试复现成功才改代码 | 各工具行为相同 |
 | `sandbox-fetch-optimize` | 沙盒对比拉数成本，score 赢了才落地 | 各工具行为相同 |

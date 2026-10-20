@@ -14,6 +14,8 @@ Each skill is a directory with a required `SKILL.md` file (YAML frontmatter + Ma
 | [`expand-first-mention`](./expand-first-mention/) | Format and examples for expanding ambiguous abbreviations on first mention. Daily behavior is `always-on.md` pasted into each IDE's persistent instructions, not this skill |
 | [`explore-to-doc`](./explore-to-doc/) | Read `docs/index.md` before exploring; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` |
 | [`git-commit`](./git-commit/) | Standardized git commit and push workflow: selective staging, conventional commits, safe execution, and push |
+| [`grill-me`](./grill-me/) | User-invoked interview that sharpens a plan or design by calling `grilling`. Upstream: [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grill-me) |
+| [`grilling`](./grilling/) | Interview primitive behind `grill-me`: walk the design tree in rounds until every branch is settled. Upstream: [mattpocock/skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/grilling) |
 | [`memwalker`](./memwalker/) | MemWalker interactive reading: summary tree + reasoned navigation for long docs/code beyond one context pass |
 | [`review-fix`](./review-fix/) | Verify review findings against current code, reproduce each confirmed issue with a failing test, then fix only after reproduction succeeds |
 | [`sandbox-fetch-optimize`](./sandbox-fetch-optimize/) | Sandbox-first data-fetch optimization: measure baseline cost, compare multiple schemes, adopt only when the comparison wins |
@@ -35,6 +37,14 @@ Skills/
 │   └── SKILL.md
 ├── git-commit/
 │   └── SKILL.md
+├── grill-me/
+│   ├── SKILL.md
+│   ├── LICENSE
+│   └── agents/
+│       └── openai.yaml
+├── grilling/
+│   ├── SKILL.md
+│   └── LICENSE
 ├── memwalker/
 │   ├── SKILL.md
 │   └── reference.md
@@ -59,6 +69,22 @@ cd Skills
 
 Then copy each skill directory into the path expected by your tool (below).
 
+### Install `grill-me`
+
+`grill-me` is also published upstream. Install that copy with:
+
+```bash
+npx skills add https://github.com/mattpocock/skills --skill grill-me
+```
+
+`grill-me` only starts the session. It calls `grilling`, which is vendored next to it in this repo. Install that the same way:
+
+```bash
+npx skills add https://github.com/mattpocock/skills --skill grilling
+```
+
+Copying `grill-me/` and `grilling/` from this repo (the commands below) installs the same pair.
+
 ---
 
 ## Claude Code
@@ -74,14 +100,14 @@ Claude Code scans skill directories automatically. Restart or start a new sessio
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.claude/skills/
 ```
 
 ### Project install
 
 ```bash
 mkdir -p .claude/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design .claude/skills/
 ```
 
 ### Usage
@@ -109,11 +135,11 @@ Codex also discovers directories that contain `SKILL.md`.
 ```bash
 # Codex user skills
 mkdir -p ~/.codex/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.codex/skills/
 
 # Or Agent Skills personal directory
 mkdir -p ~/.agents/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.agents/skills/
 ```
 
 **Restart Codex** (or open a new session), then confirm with `/skills`.
@@ -149,14 +175,14 @@ $skill-installer install https://github.com/HanochZhu/Skills/tree/main/memwalker
 
 ```bash
 mkdir -p ~/.cursor/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design ~/.cursor/skills/
 ```
 
 Project-scoped:
 
 ```bash
 mkdir -p .cursor/skills
-cp -R eli5 expand-first-mention explore-to-doc git-commit memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
+cp -R eli5 expand-first-mention explore-to-doc git-commit grill-me grilling memwalker review-fix sandbox-fetch-optimize web-design .cursor/skills/
 ```
 
 Cursor’s conventional path is `.cursor/skills/` (plural). This repo is the shared distribution layout for multiple tools.
@@ -231,6 +257,8 @@ Save as `install.sh`, then: `chmod +x install.sh && ./install.sh`.
 | `expand-first-mention` | Always-on `.cursor/rules` (`cursor-rule.mdc`); skill is format/examples only | Paste `always-on.md` into CLAUDE.md / AGENTS.md / GEMINI.md / Copilot instructions; skill is format reference |
 | `explore-to-doc` | Read `docs/index.md` first; exploration docs under `docs/explore/<topic>/`; design/architecture under `docs/design/`; plans under `docs/tasks/`; temporary reviews under `docs/tmp/` (not indexed) | Same behavior; keep workspace-level docs out of per-package `docs/` |
 | `git-commit` | Standardized selective staging, Conventional Commits message, safe commit & push | Same behavior across tools |
+| `grill-me` | User-invoked (`/grill-me`). Starts a session by calling `grilling` | Same behavior. Upstream install is under Quick start |
+| `grilling` | Model-invoked interview: one frontier round at a time, with a recommended answer on each question | Same behavior across tools |
 | `memwalker` | Builds/navigates a summary tree (optional `.memwalker/` artifacts) | Same behavior across tools |
 | `review-fix` | Verify review vs current code; failing test first; fix only after RED | Same behavior across tools |
 | `sandbox-fetch-optimize` | Sandbox-first fetch cost compare; adopt only when score wins | Same behavior across tools |
